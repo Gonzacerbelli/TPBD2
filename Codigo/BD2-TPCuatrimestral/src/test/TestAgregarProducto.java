@@ -10,8 +10,6 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 import dao.MongoDao;
-import modelo.Cliente;
-import modelo.Domicilio;
 import modelo.Producto;
 
 public class TestAgregarProducto {

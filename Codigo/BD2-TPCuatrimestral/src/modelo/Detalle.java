@@ -63,6 +63,11 @@ public class Detalle {
 	public String toString() {
 		return "Detalle [_id=" + _id + ", producto=" + producto + ", cantidad=" + cantidad + ", precio=" + precio + "]";
 	}
+
+
+	
+
+
 	
 	
 	

@@ -15,6 +15,22 @@ public class Venta {
 	private Cliente cliente;
 	
 	public Venta() {}
+	
+	public Venta(String fecha, String ticket, double totalVenta, String formaDePago, List<Detalle> detalle,
+			Empleado vendedor, Empleado cajero, Cliente cliente) {
+		super();
+		this.fecha = fecha;
+		this.ticket = ticket;
+		this.totalVenta = totalVenta;
+		this.formaDePago = formaDePago;
+		this.detalle = detalle;
+		this.vendedor = vendedor;
+		this.cajero = cajero;
+		this.cliente = cliente;
+	}
+	
+	
+	
 
 	public String getFecha() {
 		return fecha;
@@ -86,6 +102,9 @@ public class Venta {
 				+ formaDePago + ", detalle=" + detalle + ", vendedor=" + vendedor + ", cajero=" + cajero + ", cliente="
 				+ cliente + "]";
 	}
+
+
+
 	
 	
 	
