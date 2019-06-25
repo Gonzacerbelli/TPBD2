@@ -52,18 +52,27 @@ public class MongoDao {
 	
 	public void agregarLista(List<DBObject> lista,String DB,String collection) {
 		try {
-		MongoClient client = new MongoClient("localhost"); // cliente
-		DB database = client.getDB(DB); // base de datos con la que se trabaja
-		DBCollection coleccion = database.getCollection(collection); // la collection (representaria la tabla)
-		coleccion.insert(lista);
-		
-		
+			MongoClient client = new MongoClient("localhost"); // cliente
+			DB database = client.getDB(DB); // base de datos con la que se trabaja
+			DBCollection coleccion = database.getCollection(collection); // la collection (representaria la tabla)
+			coleccion.insert(lista);
 		}catch(UnknownHostException e) {
 			System.out.println("Error Ingresando el dato");
 		}
 	}
 	
-	
+	public List<DBObject> getCollectionData(String DB, String collection, DBObject query) {
+		List<DBObject> data = null;
+		try {
+			MongoClient client = new MongoClient("localhost");
+			DB database = client.getDB(DB);
+			DBCollection coleccion = database.getCollection(collection);
+			data = coleccion.find(query).toArray();
+		} catch (UnknownHostException e) {
+			System.out.println("Error consultando db: " + e.getMessage());
+		}
+		return data;
+	}
 	
 	
 	

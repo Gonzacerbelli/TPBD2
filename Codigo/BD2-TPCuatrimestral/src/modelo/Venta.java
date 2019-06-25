@@ -4,6 +4,8 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.DBObject;
+
 public class Venta {
 	private String fecha;
 	private String ticket;
@@ -28,9 +30,6 @@ public class Venta {
 		this.cajero = cajero;
 		this.cliente = cliente;
 	}
-	
-	
-	
 
 	public String getFecha() {
 		return fecha;
@@ -103,19 +102,13 @@ public class Venta {
 				+ cliente + "]";
 	}
 
-
-
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
+	public List<String> mapVentas(List<DBObject> objectList) {
+		List<String> lista = new ArrayList<String>();
+		for (int i = 0; i < objectList.size(); i++) {
+			DBObject objeto = objectList[i];
+			lista.add("Total venta: " + objeto.get("totalVenta"));
+		}
+		return lista;
+	}
 
 }

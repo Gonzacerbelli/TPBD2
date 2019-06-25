@@ -28,7 +28,7 @@ public class TestSerialize
             Producto productoParseado = mapper.readValue(beutifulJson, Producto.class);
             System.out.println(productoParseado.toString());
             
-            
+
             
             //agregando a la bd
             MongoDao.getInstance().agregar(json, "Farmacia", "Producto"); // funciona
