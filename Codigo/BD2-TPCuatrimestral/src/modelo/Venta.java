@@ -105,7 +105,7 @@ public class Venta {
 	public List<String> mapVentas(List<DBObject> objectList) {
 		List<String> lista = new ArrayList<String>();
 		for (int i = 0; i < objectList.size(); i++) {
-			DBObject objeto = objectList[i];
+			DBObject objeto = objectList.get(i);
 			lista.add("Total venta: " + objeto.get("totalVenta"));
 		}
 		return lista;

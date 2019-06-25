@@ -61,13 +61,13 @@ public class MongoDao {
 		}
 	}
 	
-	public List<DBObject> getCollectionData(String DB, String collection, DBObject query) {
+	public List<DBObject> getCollectionData(String DB, String collection, DBObject query,DBObject fields) { 
 		List<DBObject> data = null;
 		try {
 			MongoClient client = new MongoClient("localhost");
 			DB database = client.getDB(DB);
 			DBCollection coleccion = database.getCollection(collection);
-			data = coleccion.find(query).toArray();
+			data = coleccion.find(query,fields).toArray();	//al collection.find() le puedo pasar un dbObject "fields" que contenga los campos que quiero que muestre
 		} catch (UnknownHostException e) {
 			System.out.println("Error consultando db: " + e.getMessage());
 		}
