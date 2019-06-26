@@ -15,11 +15,12 @@ public class Venta {
 	private Empleado vendedor;
 	private Empleado cajero;
 	private Cliente cliente;
+	private int cantidadProductos;
 	
 	public Venta() {}
 	
 	public Venta(String fecha, String ticket, double totalVenta, String formaDePago, List<Detalle> detalle,
-			Empleado vendedor, Empleado cajero, Cliente cliente) {
+			Empleado vendedor, Empleado cajero, Cliente cliente,int cantidadProductos) {
 		super();
 		this.fecha = fecha;
 		this.ticket = ticket;
@@ -29,6 +30,7 @@ public class Venta {
 		this.vendedor = vendedor;
 		this.cajero = cajero;
 		this.cliente = cliente;
+		this.cantidadProductos=cantidadProductos;
 	}
 
 	public String getFecha() {
@@ -95,11 +97,19 @@ public class Venta {
 		this.cliente = cliente;
 	}
 
+	public int getCantidadProductos() {
+		return cantidadProductos;
+	}
+
+	public void setCantidadProductos(int cantidadProductos) {
+		this.cantidadProductos = cantidadProductos;
+	}
+
 	@Override
 	public String toString() {
 		return "Venta [fecha=" + fecha + ", ticket=" + ticket + ", totalVenta=" + totalVenta + ", formaDePago="
 				+ formaDePago + ", detalle=" + detalle + ", vendedor=" + vendedor + ", cajero=" + cajero + ", cliente="
-				+ cliente + "]";
+				+ cliente + ", cantidadProductos="+cantidadProductos+"  ]";
 	}
 
 	public List<String> mapVentas(List<DBObject> objectList) {
