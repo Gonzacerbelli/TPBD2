@@ -3,8 +3,12 @@ package test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,12 +24,20 @@ import dao.MongoDao;
 import modelo.Cliente;
 import modelo.Domicilio;
 import modelo.Producto;
+import modelo.RankingClientes;
+import modelo.Sort;
 
 public class TestConsultas {
 
+	
+	
 	public static void main(String[] args) {
+		
+		
 
         ObjectMapper mapper = new ObjectMapper();
+        
+        
         
         try {
         	
@@ -38,7 +50,8 @@ public class TestConsultas {
         	System.out.println("6 - Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por cantidad vendida.");
         	System.out.println("7 - Ranking de clientes por compras, total de la cadena y por sucursal, entre fechas, por monto.");
         	System.out.println("8 - Ranking de clientes por compras, total de la cadena y por sucursal, entre fechas, por cantidad vendida.");
-        	System.out.println("Recordatorio: Para consultar la cadena, ingrese 0 en sucursal.");
+        	System.out.println("IMPORTANTE: Para consultar la cadena, ingrese 0 en sucursal.");
+        	System.out.println("IMPORTANTE: La fecha debe ser ingresada en formato 'AAAA-MM-DD'.");
         	System.out.print("Opción: ");
         	String opcion =new BufferedReader(new InputStreamReader(System.in)).readLine();
         	
@@ -50,6 +63,27 @@ public class TestConsultas {
         	List<DBObject> data = new ArrayList<DBObject>();
         	double total = 0;
         	
+        	ArrayList<RankingClientes> rankingMonto = new ArrayList<RankingClientes>();
+        	rankingMonto.add(new RankingClientes(1,0,0));
+        	rankingMonto.add(new RankingClientes(2,0,0));
+        	rankingMonto.add(new RankingClientes(3,0,0));
+        	rankingMonto.add(new RankingClientes(4,0,0));
+        	rankingMonto.add(new RankingClientes(5,0,0));
+        	rankingMonto.add(new RankingClientes(6,0,0));
+        	rankingMonto.add(new RankingClientes(8,0,0));
+        	rankingMonto.add(new RankingClientes(7,0,0));
+        	
+        	ArrayList<RankingClientes> rankingCantidadCompras = new ArrayList<RankingClientes>();
+        	rankingCantidadCompras.add(new RankingClientes(1,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(2,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(3,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(4,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(5,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(6,0,0));
+        	rankingCantidadCompras.add(new RankingClientes(7,0,0));	
+        	rankingCantidadCompras.add(new RankingClientes(8,0,0));
+        	
+        	//menu
         	switch(num) {
         	
         	case 1:
@@ -162,7 +196,7 @@ public class TestConsultas {
                 System.out.print("Fecha de fin: ");
             	fechaFin = new BufferedReader(new InputStreamReader(System.in)).readLine();
             	
-            	System.out.print("Forma de Pago: ");
+            	System.out.print("Forma de Pago (Efectivo o Tarjeta): ");
             	String formaDePago = new BufferedReader(new InputStreamReader(System.in)).readLine();
             	
             	if (nroSucursal.equals("0") && formaDePago.equals("Efectivo")) {
@@ -279,12 +313,12 @@ public class TestConsultas {
 
 				// parse a dbObject
 				DBObject consulta5 = (DBObject) JSON.parse(query);
-				String campos5 = "{_id : 1,totalVenta : 1}";
+				String campos5 = "{_id : 1, totalVenta : 1}";
 				DBObject fields5 = (DBObject) JSON.parse(campos5);
 				String sort5 = "{totalVenta : -1}";
 				DBObject orden5 = (DBObject) JSON.parse(sort5);
 
-				System.out.println(query);
+			//	System.out.println(query);
 				double totalVentas5 = 0;
 				data = MongoDao.getInstance().getCollectionDataSorted("Farmacia", "Venta", consulta5, fields5,orden5);
 
@@ -295,16 +329,15 @@ public class TestConsultas {
 	     			} else {
 	     				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
 	     			}
-					System.out.println("Detalle de ventas: ");
+					System.out.println("ID y totales de ventas: ");
 					for(DBObject doc : data) {
 						totalVentas5 += (double) doc.get("totalVenta");
-						DBObject detalle = (DBObject) doc.get("detalle");
-						
-						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
-	        			System.out.println(dataMapped);
+    					
+						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
+    					System.out.println(dataMapped);
 	     			}
 					if (nroSucursal.equals("0")) {
-						System.out.println("Total de ventas para la cadena completa: " + totalVentas5);
+						System.out.println("Total de ventas para la cadena completa: " + String.format("%.2f", totalVentas5));
 					} else {
 						System.out.println("Total de ventas para la sucursal " + nroSucursal + ": " + totalVentas5);
 					}
@@ -314,6 +347,7 @@ public class TestConsultas {
 				break;
 				
         	case 6:
+        		
         		System.out.print("Sucursal a consultar: ");
             	nroSucursal = new BufferedReader(new InputStreamReader(System.in)).readLine();
                 
@@ -379,23 +413,45 @@ public class TestConsultas {
 				DBObject orden7 = (DBObject) JSON.parse(sort7);
 				data = MongoDao.getInstance().getCollectionDataSorted("Farmacia", "Venta", consulta7, fields7, orden7);
 				
-				double comprasCliente[] = new double[7];
 				
-				// data print
+				
+				// pongo los datos en la lista correspondiente
 				if (!data.isEmpty()) {
 					for (DBObject doc : data) {
+						total += (double) doc.get("totalVenta");
 						DBObject cliente = (DBObject) doc.get("cliente");
-						comprasCliente[(int) cliente.get("_id")] += (double) doc.get("totalVenta");
+						rankingMonto.get((int) cliente.get("_id")).setMontoCompra((double)doc.get("totalVenta")+
+								rankingMonto.get((int) cliente.get("_id")).getMontoCompra());
+						
+						
 					}
 				} else {
-					System.out.println("Ningun documento coincide con la busqueda!");
+					System.out.println("\nATENCIÓN: Ningun documento coincide con la busqueda!");
 				}
 				
-				for (int i = 0; i < 7; i++) {
-					if (comprasCliente != null && comprasCliente[i] != 0) {
-						System.out.println("Cliente " + i + ": " + comprasCliente[i]);
+				//data sort --> DESCENDIENTE
+				Collections.sort(rankingMonto, new Comparator<RankingClientes>(){
+					public int compare(RankingClientes c1, RankingClientes c2) {
+						return Integer.valueOf((int) c2.getMontoCompra()).compareTo((int) c1.getMontoCompra());
 					}
+				});
+				
+				
+				//data print
+				if (!data.isEmpty()) { 
+					System.out.println("\nClientes por monto de compra: ");
+				for(RankingClientes rank : rankingMonto) {
+				System.out.println("Cliente: "+rank.getCliente() +", Monto de Compra: "+ String.format("%.2f", rank.getMontoCompra()));
+
 				}
+				if (nroSucursal.equals("0")) {
+					System.out.println("Total de ventas para la cadena completa: " + String.format("%.2f", total));
+				} else {
+					System.out.println("Total de ventas para la sucursal " + nroSucursal + ": " + String.format("%.2f", total));
+				}
+				
+				}
+
         		break;
         		
         	case 8:
@@ -415,7 +471,7 @@ public class TestConsultas {
 				}
             	
             	DBObject consulta8 = (DBObject) JSON.parse(query);
-				String campos8 = "{cliente : 1, detalle : 1}";
+				String campos8 = "{cliente : 1, detalle : 1, totalVenta : 1, cantidadProductos : 1}";
 				DBObject fields8 = (DBObject) JSON.parse(campos8);
 				data = MongoDao.getInstance().getCollectionData("Farmacia", "Venta", consulta8, fields8);
 				
@@ -423,21 +479,44 @@ public class TestConsultas {
 				if (!data.isEmpty()) {
 					for (DBObject doc : data) {
 						DBObject cliente = (DBObject) doc.get("cliente");
-						DBObject detalle = (DBObject) doc.get("detalle");
-
-						for (int j = 0; j < detalle.toMap().size(); j++) {
-							DBObject productos = (DBObject) detalle.toMap().get("producto");
-							System.out.println(productos);
-							
-						}
+						int cantidadProductos = (int) doc.get("cantidadProductos");
+						total+= (double) doc.get("totalVenta");
+						rankingCantidadCompras.get((int) cliente.get("_id")).setCantidadVentas(rankingCantidadCompras.get((int) cliente.get("_id")).getCantidadVentas() 
+								+ cantidadProductos);
 					}
 				} else {
 					System.out.println("Ningun documento coincide con la busqueda!");
 				}
+				
+				//data sort --> DESCENDIENTE
+				Collections.sort(rankingCantidadCompras, new Comparator<RankingClientes>(){
+					public int compare(RankingClientes c1, RankingClientes c2) {
+						return Integer.valueOf((int) c2.getCantidadVentas()).compareTo((int) c1.getCantidadVentas());
+					}
+				});
+				
+				
+				//data print
+				if (!data.isEmpty()) { 
+					System.out.println("\nClientes por monto de compra: ");
+				for(RankingClientes rank : rankingCantidadCompras) {
+				System.out.println("Cliente: "+rank.getCliente() +", Cantidad Comprada: "+ rank.getCantidadVentas());
+
+				}
+				if (nroSucursal.equals("0")) {
+					System.out.println("Total de ventas para la cadena completa: " + String.format("%.2f", total));
+				} else {
+					System.out.println("Total de ventas para la sucursal " + nroSucursal + ": " + String.format("%.2f", total));
+				}
+				
+				}
+
+        		break;
+
 				// cierre del menu!
         	default:
         		System.out.println();
-				System.out.println("Saliste...");
+				System.out.println("Gracias por Utilizar el servicio..");
 				break;
 
 			}

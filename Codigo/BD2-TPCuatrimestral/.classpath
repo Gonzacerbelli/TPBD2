@@ -6,12 +6,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/bson-2.13.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/bson-2.13.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/bson-2.13.3-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/jackson-all-1.9.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/mongo-java-driver-2.13.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/mongo-java-driver-2.13.3-javadoc.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Gonzalo Cerbelli/Documents/Eclipse/lib/mongo-java-driver-2.13.3-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/bson-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/bson-2.13.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/bson-2.13.3-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/jackson-all-1.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/mongo-java-driver-2.13.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/mongo-java-driver-2.13.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/Proyectos Eclipse/Orientación a Objetos II/BD2-TPCuatrimestral/mongo jars/mongo-java-driver-2.13.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
