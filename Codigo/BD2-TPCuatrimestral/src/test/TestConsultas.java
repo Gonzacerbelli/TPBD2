@@ -77,33 +77,22 @@ public class TestConsultas {
     			data = MongoDao.getInstance().getCollectionData("Farmacia", "Venta", consulta1,fields1);
     			
     			double totalVentas = 0;
-    			List<Producto> lstProductos = null;
-    			    			
+    			
     			if (!data.isEmpty()) {
+    				if (nroSucursal.equals("0")) {
+         				System.out.println("Resultados para la cadena:");
+         			} else {
+         				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
+         			}
+    				System.out.println("Detalle de ventas: ");
     				for(DBObject doc : data) {
-    					/*
-	         			String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
-	         			System.out.println(dataMapped);
-	         			*/
     					totalVentas += (double) doc.get("totalVenta");
     					DBObject detalle = (DBObject) doc.get("detalle");
     					
-    					// Tenemos que iterar sobre el detalle que es un array de jsons para crear los productos
-    					// y asi hacer la descripcion de la venta
-    					/*
-    					for(DBObject det : (Array) detalle.toMap()) {
-    						
-    					}
-    					
-    					Producto producto = new Producto();
-    					*/
+    					String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
+            			System.out.println(dataMapped);
          			}
 
-         			if (nroSucursal.equals("0")) {
-         				System.out.println("Resultados para la cadena:");
-         			} else {
-         				System.out.println("Resultados para la sucursal" + nroSucursal + ":");
-         			}
          			System.out.println("Total de ventas: " + totalVentas );
          			
     			} else {
@@ -139,12 +128,25 @@ public class TestConsultas {
             	String campos2 = "{_id : 0,detalle : 1,totalVenta : 1}";	
             	DBObject fields2 = (DBObject) JSON.parse(campos2);
             	data = MongoDao.getInstance().getCollectionData("Farmacia", "Venta", consulta2,fields2);
-            	 
+            	
+            	double totalVentas2 = 0;
+    			
             	if (!data.isEmpty()) {
-            		for(DBObject doc : data) {
-            			String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
+            		if (nroSucursal.equals("0")) {
+         				System.out.println("Resultados para la cadena:");
+         			} else {
+         				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
+         			}
+    				System.out.println("Detalle de ventas: ");
+    				for(DBObject doc : data) {
+    					totalVentas2 += (double) doc.get("totalVenta");
+    					DBObject detalle = (DBObject) doc.get("detalle");
+    					
+    					String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
             			System.out.println(dataMapped);
-            		}
+         			}
+
+         			System.out.println("Total de ventas: " + totalVentas2 );
             	} else {
             		System.out.println("Ningun documento coincide con la busqueda!");
      			}
@@ -178,12 +180,25 @@ public class TestConsultas {
             	String campos3 = "{_id : 0,detalle : 1,totalVenta : 1,formaDePago : 1}";	
             	DBObject fields3 = (DBObject) JSON.parse(campos3);            	
            	 	data = MongoDao.getInstance().getCollectionData("Farmacia", "Venta", consulta3,fields3);
+           	 	
+            	double totalVentas3 = 0;
         		
            	 	if (!data.isEmpty()) {
-           	 		for(DBObject doc : data) {
-           	 			String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
-           	 			System.out.println(dataMapped);
-           	 		}
+	           	 	if (nroSucursal.equals("0")) {
+	     				System.out.println("Resultados para la cadena:");
+	     			} else {
+	     				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
+	     			}
+					System.out.println("Detalle de ventas: ");
+					for(DBObject doc : data) {
+						totalVentas3 += (double) doc.get("totalVenta");
+						DBObject detalle = (DBObject) doc.get("detalle");
+						
+						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
+	        			System.out.println(dataMapped);
+	     			}
+	
+	     			System.out.println("Total de ventas: " + totalVentas3 );
            	 	} else {
      				System.out.println("Ningun documento coincide con la busqueda!");
      			}
@@ -202,7 +217,6 @@ public class TestConsultas {
             	System.out.print("Farmacia o Perfumeria?: ");
             	String sector = new BufferedReader(new InputStreamReader(System.in)).readLine();
             	
-            	//>>> no se que tan bien  esté esto porque no estoy seguro si "detalle.producto.esMedicamento : false" solo te trae las ventas donde el detalle sea false. <<<<
             	if (nroSucursal.equals("0") && sector.equals("Farmacia")) {
             		query = "{$and: [{fecha: {$gte: '" + fechaInicio + "'}}, {fecha: {$lte: '" + fechaFin + "'}},{'detalle.producto.esMedicamento' : false }]},{_id : 0,detalle : 1,totalVenta : 1})";
             	} else if (nroSucursal.equals("0") && sector.equals("Perfumeria")){
@@ -219,22 +233,32 @@ public class TestConsultas {
             	DBObject fields4 = (DBObject) JSON.parse(campos4);
             	total=0;
            	 	data = MongoDao.getInstance().getCollectionData("Farmacia", "Venta", consulta4,fields4);
+           	 	
+            	double totalVentas4 = 0;
         		
            	 	if (!data.isEmpty()) {
-           	 		for(DBObject doc : data) {
-           	 			total+= (double) doc.get("totalVenta");
-           	 			String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
-           	 			System.out.println(dataMapped);
-           	 		}
+	           	 	if (nroSucursal.equals("0")) {
+	     				System.out.println("Resultados para la cadena:");
+	     			} else {
+	     				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
+	     			}
+					System.out.println("Detalle de ventas: ");
+					for(DBObject doc : data) {
+						totalVentas4 += (double) doc.get("totalVenta");
+						DBObject detalle = (DBObject) doc.get("detalle");
+						
+						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
+	        			System.out.println(dataMapped);
+	     			}
+		           	 
+	           	 	if (nroSucursal.equals("0")) {
+	           	 		System.out.println("Total de "+sector+" para la cadena completa: "+totalVentas4);
+	           	 	} else {
+	           	 		System.out.println("Total de "+sector+" para la sucursal "+nroSucursal+": "+totalVentas4);
+	           	 	}
            	 	} else {
            	 		System.out.println("Ningun documento coincide con la busqueda!");
      			}
-           	 
-           	 	if (nroSucursal.equals("0")) {
-           	 		System.out.println("Total de "+sector+" para la cadena completa: "+total);
-           	 	} else {
-           	 		System.out.println("Total de "+sector+" para la sucursal "+nroSucursal+": "+total);
-           	 	}
            	 	break;
            	 
         	case 5:
@@ -261,27 +285,33 @@ public class TestConsultas {
 				DBObject orden5 = (DBObject) JSON.parse(sort5);
 
 				System.out.println(query);
-				total = 0;
+				double totalVentas5 = 0;
 				data = MongoDao.getInstance().getCollectionDataSorted("Farmacia", "Venta", consulta5, fields5,orden5);
 
 				// data print
 				if (!data.isEmpty()) {
-					for (DBObject doc : data) {
-						total += (double) doc.get("totalVenta");
-						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(doc);
-						System.out.println(dataMapped);
+					if (nroSucursal.equals("0")) {
+	     				System.out.println("Resultados para la cadena:");
+	     			} else {
+	     				System.out.println("Resultados para la sucursal " + nroSucursal + ": ");
+	     			}
+					System.out.println("Detalle de ventas: ");
+					for(DBObject doc : data) {
+						totalVentas5 += (double) doc.get("totalVenta");
+						DBObject detalle = (DBObject) doc.get("detalle");
+						
+						String dataMapped = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(detalle);
+	        			System.out.println(dataMapped);
+	     			}
+					if (nroSucursal.equals("0")) {
+						System.out.println("Total de ventas para la cadena completa: " + totalVentas5);
+					} else {
+						System.out.println("Total de ventas para la sucursal " + nroSucursal + ": " + totalVentas5);
 					}
 				} else {
 					System.out.println("Ningun documento coincide con la busqueda!");
 				}
-				
-				// print de total
-				if (nroSucursal.equals("0")) {
-					System.out.println("Total de ventas para la cadena completa: " + total);
-				} else {
-					System.out.println("Total de ventas para la sucursal " + nroSucursal + ": " + total);
-				}
-
+				break;
 				
         	case 6:
         		System.out.print("Sucursal a consultar: ");
